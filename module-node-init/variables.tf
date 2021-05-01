@@ -19,5 +19,5 @@ variable "hetzner_driver_id" {
 }
 
 variable "private_network_name" {
-    type = string
+  type = string
 }

@@ -5,3 +5,4 @@
 *.tfstate
 *.tfstate.backup
 kube_config.yaml
+.terraform.lock.hcl

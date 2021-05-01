@@ -28,8 +28,8 @@ resource "hcloud_server" "rancher_management_nodes" {
   image       = "ubuntu-20.04"
   server_type = var.instance_type
 
-  location    = element(var.instance_zones, count.index) # Modulo is performed by element function
-  user_data   = file("${path.module}/scripts/rancher_management_init.sh")
+  location  = element(var.instance_zones, count.index) # Modulo is performed by element function
+  user_data = file("${path.module}/scripts/rancher_management_init.sh")
 
   # This is necessary to wait for all installation tasks to finish
   provisioner "remote-exec" {
@@ -59,9 +59,9 @@ resource "hcloud_network_subnet" "rancher_management_subnet" {
 }
 
 resource "hcloud_server_network" "rancher_node_subnet_registration" {
-  count      = var.instance_count
-  server_id  = hcloud_server.rancher_management_nodes[count.index].id
-  subnet_id  = hcloud_network_subnet.rancher_management_subnet.id
+  count     = var.instance_count
+  server_id = hcloud_server.rancher_management_nodes[count.index].id
+  subnet_id = hcloud_network_subnet.rancher_management_subnet.id
 }
 
 #======================================================================================================
@@ -100,7 +100,7 @@ resource "hcloud_load_balancer_service" "rancher_management_lb_k8s_service" {
   protocol         = "tcp"
   listen_port      = 6443
   destination_port = 6443
-  depends_on = [hcloud_load_balancer_target.rancher_management_lb_targets]
+  depends_on       = [hcloud_load_balancer_target.rancher_management_lb_targets]
 }
 
 resource "hcloud_load_balancer_service" "rancher_management_lb_http_service" {
@@ -108,7 +108,7 @@ resource "hcloud_load_balancer_service" "rancher_management_lb_http_service" {
   protocol         = "tcp"
   listen_port      = 80
   destination_port = 80
-  depends_on = [hcloud_load_balancer_target.rancher_management_lb_targets]
+  depends_on       = [hcloud_load_balancer_target.rancher_management_lb_targets]
 }
 
 resource "hcloud_load_balancer_service" "rancher_management_lb_https_service" {
@@ -116,5 +116,5 @@ resource "hcloud_load_balancer_service" "rancher_management_lb_https_service" {
   protocol         = "tcp"
   listen_port      = 443
   destination_port = 443
-  depends_on = [hcloud_load_balancer_target.rancher_management_lb_targets]
+  depends_on       = [hcloud_load_balancer_target.rancher_management_lb_targets]
 }

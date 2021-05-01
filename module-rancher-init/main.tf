@@ -5,7 +5,7 @@ terraform {
       version = "1.3.2"
     }
     rancher2 = {
-      source = "rancher/rancher2"
+      source  = "rancher/rancher2"
       version = "1.11.0"
     }
   }
@@ -32,11 +32,11 @@ provider "rancher2" {
 }
 
 resource "helm_release" "cert_manager" {
-  name             = "cert-manager"
-  namespace        = "cert-manager"
-  repository       = "https://charts.jetstack.io"
-  chart            = "cert-manager"
-  version          = "1.0.4"
+  name       = "cert-manager"
+  namespace  = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  version    = "1.0.4"
 
   wait             = true
   create_namespace = true
@@ -50,9 +50,9 @@ resource "helm_release" "cert_manager" {
 }
 
 resource "helm_release" "rancher" {
-  name = "rancher"
-  namespace = "cattle-system"
-  chart = "rancher"
+  name       = "rancher"
+  namespace  = "cattle-system"
+  chart      = "rancher"
   repository = "https://releases.rancher.com/server-charts/latest"
   depends_on = [helm_release.cert_manager]
 
@@ -85,17 +85,18 @@ resource "rancher2_bootstrap" "setup_admin" {
 }
 
 resource "rancher2_node_driver" "hetzner_node_driver" {
-  provider = "rancher2.admin"
-  active   = true
-  builtin  = false
-  name     = "Hetzner"
-  ui_url   = "https://storage.googleapis.com/hcloud-rancher-v2-ui-driver/component.js"
-  url      = "https://github.com/JonasProgrammer/docker-machine-driver-hetzner/releases/download/3.2.0/docker-machine-driver-hetzner_3.2.0_linux_amd64.tar.gz"
+  provider          = "rancher2.admin"
+  active            = true
+  builtin           = false
+  name              = "Hetzner"
+  ui_url            = "https://storage.googleapis.com/hcloud-rancher-v2-ui-driver/component.js"
+  url               = "https://github.com/JonasProgrammer/docker-machine-driver-hetzner/releases/download/3.2.0/docker-machine-driver-hetzner_3.2.0_linux_amd64.tar.gz"
   whitelist_domains = ["storage.googleapis.com"]
 }
 
 output "rancher_admin_token" {
-  value = rancher2_bootstrap.setup_admin.token
+  value     = rancher2_bootstrap.setup_admin.token
+  sensitive = true
 }
 
 output "hetzner_driver_id" {

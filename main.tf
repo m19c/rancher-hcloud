@@ -1,5 +1,5 @@
 module "cluster_init" {
-  source = "./module-cluster-init"
+  source               = "./module-cluster-init"
   hcloud_token         = var.hcloud_token
   hcloud_ssh_key_path  = var.hcloud_ssh_key_path
   instance_count       = var.instance_count
